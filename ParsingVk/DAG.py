@@ -1,23 +1,19 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import datetime
+from airflow.models import DAG
+from airflow.operators.python_operator import PythonOperator
 import vk_api
 import re
-import psycopg2
 from nltk.corpus import stopwords
+import psycopg2
 
 
-# def print_hi(name):
-#     # Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-#
-#
-# # Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')
-#
-# # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+args = {
+    'owner': 'airflow',
+    'start_date': datetime.datetime(2021, 3, 16),
+    'retries': 1,
+    'retry_delay': datetime.timedelta(minutes=1),
+    'depends_on_past': False,
+}
 
 
 def main():
@@ -47,7 +43,6 @@ def main():
     for i in range(len(s1)):
         prom = s1.count(s1[i])
         dict_sample[s1[i]] = prom
-    # print(dict_sample)
 
     sorted_dict = {}
     sorted_keys = sorted(dict_sample, key=dict_sample.get)
@@ -64,18 +59,19 @@ def main():
         host="datamining.clmkmkowzuvm.us-east-1.rds.amazonaws.com",
         port="5432"
     )
-    print("here")
 
     cur = con.cursor()
-
+    cur.execute("DROP TABLE IF EXISTS VKAPI")
+    cur.execute("""create table VKAPI (
+                            word  char(100),
+                            count integer
+                        );""")
     for key in right_sorted_dict:
         cur.execute(
           "INSERT INTO VKAPI(WORD, COUNT) VALUES (%s, %s)", (str(key), int(right_sorted_dict[key]))
         )
     con.commit()
-    print("Database opened successfully")
     con.close()
-    print("here")
 
 
 def get_posts(group_id, api):
@@ -84,5 +80,9 @@ def get_posts(group_id, api):
     return posts_0_100 + posts_101_200
 
 
-if __name__ == '__main__':
-    main()
+with DAG(dag_id='dag_vk', default_args=args, schedule_interval=None) as dag:
+    parse_vk_wall = PythonOperator(
+        task_id='words_statistic',
+        python_callable=main,
+        dag=dag
+    )
