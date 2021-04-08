@@ -64,7 +64,6 @@ def main():
         host="datamining.clmkmkowzuvm.us-east-1.rds.amazonaws.com",
         port="5432"
     )
-    print("here")
 
     cur = con.cursor()
 
@@ -73,9 +72,7 @@ def main():
           "INSERT INTO VKAPI(WORD, COUNT) VALUES (%s, %s)", (str(key), int(right_sorted_dict[key]))
         )
     con.commit()
-    print("Database opened successfully")
     con.close()
-    print("here")
 
 
 def get_posts(group_id, api):
