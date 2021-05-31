@@ -1,0 +1,64 @@
+cheese
+milk
+yogurt
+sour
+cream
+eggs
+butter
+cottage
+cheese
+meat
+chicken
+fish
+seafood
+eggs
+minced meat
+stews
+canned fish
+spice
+vegetable oil
+vinegar
+mustard
+dried fruits
+nuts
+muesli
+Macaroni
+cereals
+rice
+soda
+salt
+sugar
+flour
+yeast
+peas
+beans
+bread
+Tea
+coffee
+cocoa
+skirt
+Bikini
+Dress pants
+Jumper
+Sneakers
+Hoodie
+Vest
+High heels
+Flip flops
+Handbag
+Tank top
+Singlet
+Boots
+Shorts
+Polo shirt
+Umbrella
+Dress
+Hawaiian shirt
+Mittens
+Socks
+Swimsuit
+Trench coat
+Winter coat
+Straw hat
+Cap
+Scarf
